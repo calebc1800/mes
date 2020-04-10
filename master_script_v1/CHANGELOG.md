@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Change webscraper to a subprocess so that it runs faster
 - Include a ping sweep so that all targets are found
 
-## [1.0.1]
+## [1.0.1] - 2020-04-10
 ### Changed
 - Cleaned up script overall
 - Replaced web scrapper output with a more informative output
