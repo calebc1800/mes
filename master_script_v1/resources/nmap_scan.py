@@ -4,7 +4,7 @@ import subprocess
 import argparse
 import sys
 
-#Written by Blackfire
+#Written by Caleb Chang
 
 def get_arguments():
     #CLI arguments for script
