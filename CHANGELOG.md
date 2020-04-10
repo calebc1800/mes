@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 - Full custom errors
 - nmap scan selection
-- Interactive cli
+- Optional interactive cli
 - nmap export as all file types and use .xml for filtering
 - remove stdout for nmap scans to only files
 - Change webscraper to a subprocess so that it runs faster
