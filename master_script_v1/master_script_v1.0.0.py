@@ -77,7 +77,6 @@ if hosts_exist != True:
     print('[+] Deleting report directory')
     call(['rm', '-r', work_dir])
     print('[+] Exiting Script...')
-    
     exit(1)
 #Created directory for each host found
 for client in hosts_dict:
