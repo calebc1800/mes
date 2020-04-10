@@ -48,9 +48,9 @@ def nmap_scan(ip_addr, report_name, wait):
         return p
     else:
         p.wait()
-def website_search(nmap_report):
-    #searches nmap reports for port 80 or http
-    search_args = 'egrep "80/open|http" < ' + nmap_report
+def webserver_search(nmap_report):
+    #searches nmap reports for an open port 80
+    search_args = 'egrep "80/open/tcp//http\?///" < ' + nmap_report
     #web_result is equal to the exit code of the egrep, if 0, then there is a website; if 1, then there is not.
     web_result = call(search_args, stdout=DEVNULL, shell=True)
     return web_result
@@ -77,7 +77,6 @@ if hosts_exist != True:
     print('[+] Deleting report directory')
     call(['rm', '-r', work_dir])
     print('[+] Exiting Script...')
-    
     exit(1)
 #Created directory for each host found
 for client in hosts_dict:
@@ -99,10 +98,12 @@ print('[+] Detailed scan complete!')
 ##website scrapper
 #initializes list of http_host for future use
 http_host = list()
+ecount = 0
+ucount = 0
 for client in hosts_dict:
     #searches nmap reports for websites
     nreport = work_dir + client['ip'] + '/' + 'nmap_results.txt'
-    web_result = website_search(nreport)
+    web_result = webserver_search(nreport)
     #if there is a website then it scrapes the website
     if web_result == 0:
         #adds host to http_host list
@@ -115,13 +116,18 @@ for client in hosts_dict:
         echeck = webscrape.email_check(http_location)
         if echeck == True:
             emails = webscrape.email_scrape(http_location)
+            #adds amount of emails to total email count
+            ecount = ecount + len(emails)
             #saves the emails list to file in the report directory
             save_to_file(host_dir, 'emails.txt', emails)
         ucheck = webscrape.url_check(http_location)
         if ucheck == True:
             urls = webscrape.url_scrape(http_location)
+            #adds amount of urls to total url count
+            ucount = ucount + len(urls)
             #saves the urls list to file in the report directory
             save_to_file(host_dir, 'urls.txt', urls)
-print('[+] Websites stolen!')
+print('[+] Script found ' + str(len(http_host)) + ' websites. \n These websites contain a total of:')
+print(str(ecount) + '\t unique emails \n' + str(ucount) + '\t unique urls')
 ###Ending statement###
-print('[+] Script Complete! Reports area now avalible. Prepare to breach...')
+print('[+] Script Complete! Reports are now avalible. Prepare to breach...')
