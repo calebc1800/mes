@@ -12,6 +12,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - remove stdout for nmap scans to only files
 - Change webscraper to a subprocess so that it runs faster
 - Include a ping sweep so that all targets are found
+- Optional mac changer
+- Progress bar
+- Make host discovery optional
+
+## [1.1.0] - 2020-04-16
+### Changed
+- Web scraper now can identify which port webservers are hosted on and will correctly grab the website from that port
+- Web server ips and ports are now stored as dictionary entries
+- Changed some print statements to fix grammar and spelling
 
 ## [1.0.1] - 2020-04-10
 ### Changed
