@@ -9,12 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - nmap scan selection
 - Optional interactive cli
 - nmap export as all file types and use .xml for filtering
-- remove stdout for nmap scans to only files
 - Change webscraper to a subprocess so that it runs faster
 - Include a ping sweep so that all targets are found
 - Optional mac changer
-- Progress bar
 - Make host discovery optional
+
+## [1.1.1] - 2020-04-21
+### Added
+- Progress bar for nmap scan
+- Webserver ips and ports are now saved in a file in the main report directory
+
+### Changed
+- nmap scan now does not send info to console
 
 ## [1.1.0] - 2020-04-16
 ### Changed
