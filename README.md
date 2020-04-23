@@ -1,2 +1,2 @@
-# master-enumeration-script
+# Master Enumeration Script (MES)
 Enumeration script built from scratch using python3
