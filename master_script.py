@@ -8,9 +8,10 @@ import resources.mac_changer as mac
 import resources.network_scanner as netscan
 import resources.web_scraper as webscrape
 import argparse
-from subprocess import call, Popen, check_output
+from subprocess import call, Popen, check_output, PIPE
 from datetime import datetime
 from os import devnull, path
+from progress.bar import Bar
 
 #Global Script Variables
 DEVNULL = open(devnull, 'w')
@@ -21,12 +22,19 @@ def get_agruments():
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--directory', dest='directory', help='Destination directory for enumeration report ending with a /.')
     parser.add_argument('-t', '--target', dest='target', help='Target IP or IP subnet')
+    parser.add_argument('-s', '--scan-type', dest='scan_type', help='nmap scan type (0-2). 0 being the fastest and briefest while 2 is more detailed and longer. Default: 1')
     options = parser.parse_args()
     #Forces -t and -d to be required
     if not options.directory:
         parser.error('[-] Please specify a directory for the report, use --help for more info.')
     if not options.target:
         parser.error('[-] Please specify an IP/IP subnet, use --help for more info.')
+    #Fills scan_type option with default value if empty
+    if not options.scan_type:
+        options.scan_type = 1
+    #Checks to make sure options.scan_type has a proper value
+    if options.scan_type != 0 or options.scan_type != 1 or options.scan_type != 2:
+        parser.error('[-] Please specify a valid scan-type, use --help for more info.')
     #Checks if options.directory is exist
     dir_exist = path.isdir(options.directory)
     if dir_exist != True:
@@ -40,9 +48,14 @@ def save_to_file(location, filename, array):
     with open(location + filename, mode='wt', encoding='utf-8') as myfile:
         myfile.write('\n'.join(array))
         myfile.write('\n')
-def nmap_scan(ip_addr, report_name, wait):
-    scan_args = ['nmap', '-T4', '-Pn', '-sV', '--version-intensity', '0', '-oG', report_name, ip_addr]
-    p = Popen(scan_args)
+def nmap_scan(type, ip_addr, report_name, wait):
+    if type == 0:
+        scan_args = ['nmap', '-T4', '-Pn', '-F', '--osscan-limit', '-oG', report_name, ip_addr]
+    elif type == 1:
+        scan_args = ['nmap', '-T4', '-Pn', '-O', '-sV', '--version-intensity', '0', '-oG', report_name, ip_addr]
+    elif type == 2:
+        scan_args = ['nmap', '-T4', '-Pn', '-p-', '--osscan-guess', '-sV', '--version-intensity', '5', '-oG', report_name, ip_addr]
+    p = Popen(scan_args, stdout=PIPE)
     #If wait is equal to 0, then continue the script, else wait for nmap_scan to complete before continuing
     if wait == 0:
         return p
@@ -101,16 +114,21 @@ ps = list()
 for client in hosts_dict:
     #run nmap_scan as a subprocess and continue script.
     nmap_location = work_dir + client['ip'] + '/' + 'nmap_results.txt'
-    p = nmap_scan(client['ip'], nmap_location, 0)
+    p = nmap_scan(options.scan_type, client['ip'], nmap_location, 0)
     #Adds the process to list
     ps.append(p)
+#progress bar setup
+bar = Bar('Scanning', max=len(ps)+1, suffix='%(percent)d%%')
+bar.next()
 #waits for each subprocess to complete before continuing script
 for p in ps:
     p.wait()
+    bar.next()
+bar.finish()
 print('[+] Detailed scan complete!')
 ##website scrapper
 #initializes list of http_host for future use
-http_list = list()
+http_dict = list()
 ecount = 0
 ucount = 0
 for client in hosts_dict:
@@ -119,9 +137,14 @@ for client in hosts_dict:
     web_result, web_ip, web_port = webserver_search(nreport)
     if web_result == str(True):
         http_host = {'ip': web_ip, 'port': web_port}
-        http_list.append(http_host)
+        http_dict.append(http_host)
+#Saves http_dict to file in work_dir
+http_list = list()
+for host in http_dict:
+    http_list.append(host['ip'] + ':' + host['port'])
+save_to_file(work_dir, 'webserver_report', http_list)
 #scrapes websites from http_host
-for server in http_list:
+for server in http_dict:
     #defines exact ip+port address
     webserver = str(server['ip']) + ':' + str(server['port'])
     #defines the directory that files will be read from/written to
@@ -143,7 +166,7 @@ for server in http_list:
         ucount = ucount + len(urls)
         #saves the urls list to file in the report directory
         save_to_file(host_dir, 'urls.txt', urls)
-print('[+] Script found ' + str(len(http_list)) + ' webservers. \nThese websites contain a total of:')
+print('[+] Script found ' + str(len(http_dict)) + ' webservers. \nThese websites contain a total of:')
 print(str(ecount) + ' unique emails \n' + str(ucount) + ' unique urls')
 ###Ending statement###
 print('[+] Script Complete! Reports are now avalible. Prepare to breach...')
