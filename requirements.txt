@@ -1,0 +1,9 @@
+additional python libraries:
+argparse
+progress
+scapy.all
+
+system packages:
+nmap
+wget
+ifconfig

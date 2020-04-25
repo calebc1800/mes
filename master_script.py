@@ -20,9 +20,9 @@ DEVNULL = open(devnull, 'w')
 def get_agruments():
     #Allows cli option input
     parser = argparse.ArgumentParser()
-    parser.add_argument('-d', '--directory', dest='directory', help='Destination directory for enumeration report ending with a /.')
-    parser.add_argument('-t', '--target', dest='target', help='Target IP or IP subnet')
-    parser.add_argument('-s', '--scan-type', dest='scan_type', help='nmap scan type (0-2). 0 being the fastest and briefest while 2 is more detailed and longer. Default: 1')
+    parser.add_argument('-d', '--directory', dest='directory', help='Destination directory for enumeration report')
+    parser.add_argument('-t', '--target', dest='target', help='Target IP (192.168.0.1) or subnet (192.168.0.0/24)')
+    parser.add_argument('-s', '--scan-type', dest='scan_type', type=int, help='nmap scan type (1-3). 1 being the fastest and briefest while 3 is more detailed and longer. Default: 2')
     options = parser.parse_args()
     #Forces -t and -d to be required
     if not options.directory:
@@ -31,9 +31,9 @@ def get_agruments():
         parser.error('[-] Please specify an IP/IP subnet, use --help for more info.')
     #Fills scan_type option with default value if empty
     if not options.scan_type:
-        options.scan_type = 1
+        options.scan_type = 2
     #Checks to make sure options.scan_type has a proper value
-    if options.scan_type != 0 or options.scan_type != 1 or options.scan_type != 2:
+    if options.scan_type != 1 and options.scan_type != 2 and options.scan_type != 3:
         parser.error('[-] Please specify a valid scan-type, use --help for more info.')
     #Checks if options.directory is exist
     dir_exist = path.isdir(options.directory)
@@ -49,11 +49,11 @@ def save_to_file(location, filename, array):
         myfile.write('\n'.join(array))
         myfile.write('\n')
 def nmap_scan(type, ip_addr, report_name, wait):
-    if type == 0:
+    if type == 1:
         scan_args = ['nmap', '-T4', '-Pn', '-F', '--osscan-limit', '-oG', report_name, ip_addr]
-    elif type == 1:
-        scan_args = ['nmap', '-T4', '-Pn', '-O', '-sV', '--version-intensity', '0', '-oG', report_name, ip_addr]
     elif type == 2:
+        scan_args = ['nmap', '-T4', '-Pn', '-O', '-sV', '--version-intensity', '0', '-oG', report_name, ip_addr]
+    elif type == 3:
         scan_args = ['nmap', '-T4', '-Pn', '-p-', '--osscan-guess', '-sV', '--version-intensity', '5', '-oG', report_name, ip_addr]
     p = Popen(scan_args, stdout=PIPE)
     #If wait is equal to 0, then continue the script, else wait for nmap_scan to complete before continuing

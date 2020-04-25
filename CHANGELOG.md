@@ -4,15 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
-- Full custom errors
-- nmap scan selection
-- Optional interactive cli
+## [Unreleased]
+- Interactive cli
 - nmap export as all file types and use .xml for filtering
 - Change webscraper to a subprocess so that it runs faster
 - Include a ping sweep so that all targets are found
-- Optional mac changer
+- mac changer
 - Make host discovery optional
+
+## [1.2.0] - 2020-04-25
+### Added
+- nmap scan option
+- arguement check for new nmap scan option to validate data
+- First release!
+- Versions in CHANGELOG will now link to releases
+- More information in README
+- Created reqirements document which contains extra python libraries which are used
 
 ## [1.1.1] - 2020-04-21
 ### Added
@@ -43,3 +50,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Created resources directory and dependencies
 - nmap scan
 - Integrated webscrapper
+
+[Unreleased]: https://github.com/calebc1800/master-enumeration-script/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/calebc1800/master-enumeration-script/releases/tag/v1.2.0
