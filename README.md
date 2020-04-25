@@ -7,7 +7,7 @@ Master Enumeration Script (MES) is a python3 script which compiles various enume
 
 ## Installation
 MES currently is installed through direct download through github. The HEAD can be downloaded by copying the repository locally or the latest stable release can be downloaded [here](https://github.com/calebc1800/mes/releases/latest).
-The required repositories and packages can be viewed in [requirements.txt](https://github.com/calebc1800/mes/requirements.txt)
+The required repositories and packages can be viewed in [requirements.txt](https://github.com/calebc1800/mes/blob/master/requirements.txt)
 
 ## Usage
 MES uses cli arguments to function. MES requires that -d and -t are used. All available arguments are as follows:
