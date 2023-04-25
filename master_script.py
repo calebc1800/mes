@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 #This is the 'Master Sword' of enumeration scripts, attempting to combine host discovery, process discovery and report analysis within one script.
-#Created by Caleb Chang
+
 
 import resources.rootchk as rootchk
 import resources.mac_changer as mac

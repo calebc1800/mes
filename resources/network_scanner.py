@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-#Written by Caleb Chang
 
 import scapy.all as scapy
 import argparse

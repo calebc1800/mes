@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 
-#Written by Blackfire
-
 import subprocess
 import argparse
 import re
 from os import devnull
 
 #Scraper that allows scraping for emails or urls on a target webpage
-#Written by Blackfire
+
 
 def get_arguments():
     #Allows cli option input

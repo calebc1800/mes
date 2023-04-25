@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Include a ping sweep so that all targets are found
 - mac changer
 - Make host discovery optional
+- package all dependencies (aka make portable)
+- scan for robots.txt and add to report
+- remove system command requirements
 
 ## [1.2.0] - 2020-04-25
 ### Added
