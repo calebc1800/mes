@@ -2,7 +2,6 @@
 
 #This is the 'Master Sword' of enumeration scripts, attempting to combine host discovery, process discovery and report analysis within one script.
 
-
 import resources.rootchk as rootchk
 import resources.mac_changer as mac
 import resources.network_scanner as netscan
@@ -166,6 +165,8 @@ for server in http_dict:
         ucount = ucount + len(urls)
         #saves the urls list to file in the report directory
         save_to_file(host_dir, 'urls.txt', urls)
+    #download robots.txt
+    webscrape.download_robots(webserver, host_dir)
 print('[+] Script found ' + str(len(http_dict)) + ' webservers. \nThese websites contain a total of:')
 print(str(ecount) + ' unique emails \n' + str(ucount) + ' unique urls')
 ###Ending statement###

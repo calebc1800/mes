@@ -26,7 +26,6 @@ MES is run through the following command:
 ```bash
 sudo python3 ./mes/master_script.py -d /[report_location]/ -t [subnet]
 ```
-Each of the scripts in the /mes/resources/ directory can also be run individually.
 
 Currently has only been tested on Debian 5.5.13-2.
 ## Contributing

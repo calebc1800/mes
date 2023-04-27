@@ -74,6 +74,13 @@ def email_check(html_file):
     check = bool(elist)
     return check
 
+def download_robots(target, file_name):
+    #Downloads robots.txt file from target website and returns it as a list
+    subprocess.call(["wget", "-qO", file_name, target + "/robots.txt"])
+    robots = subprocess.check_output(["cat", file_name]).decode("utf-8")
+    robots = robots.split("\n")
+    return robots
+
 
 ###Beginning of Operation###
 if __name__ == '__main__':
