@@ -37,8 +37,9 @@ def scan(ip, scan_type):
 
 def print_results():
     #Prints results from nmap scan
+    print("temprary results")
 
-###Beginning of Operation###use
+###Beginning of Operation###
 if __name__ == '__main__':
     import rootchk
     options = get_arguments()
